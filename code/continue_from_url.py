@@ -6,8 +6,9 @@ from tqdm import tqdm
 from scraping_functions import get_product_data
 
 
-# Retrieve current day/time for data logging
-current_date = str(date.today())
+starting_url = "https://www.ah.nl/producten/product/wi578548/bepanthen-tattoo-nazorgzalf-2-pack"
+
+url_collection = []
 
 # Retrieve data path
 working_dir = os.path.dirname(os.path.abspath(__file__))
@@ -20,22 +21,23 @@ xml_root = xml_tree.getroot()
 xml_namespace = {'ns': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
 
 # Path to csv file to write to
-data_path = os.path.join(project_root, "data", f"{current_date}.csv")
+data_path = os.path.join(project_root, "data", "data.csv")
+
+# Find all urls in the .xml
+product_urls = xml_root.findall("ns:url", xml_namespace)
+for url in product_urls:
+    product_url = url.find('ns:loc', xml_namespace).text
+    url_collection.append(product_url)
+
+start_index = url_collection.index(starting_url)
+url_collection = url_collection[start_index:]
 
 # Create new csv file or append to existing file
 with open(data_path, mode='a', newline='') as file:
         writer = csv.writer(file)
-
-        # Write headers and data logs
-        writer.writerow(["Product", "Regular price", "Sale price"])
-
-        # Find all urls in the .xml
-        product_urls = xml_root.findall("ns:url", xml_namespace)
         
         # Iterate over URLs in the .xml file
-        for url in tqdm(product_urls, leave=True):
-
-            product_url = url.find('ns:loc', xml_namespace).text
+        for product_url in tqdm(url_collection, leave=True):
 
             # Due to occasional bad webpage requests, retry data retrieval until succesful
             product_data = None
