@@ -19,7 +19,7 @@ xml_tree = ET.parse(product_xml_path)
 xml_root = xml_tree.getroot()
 xml_namespace = {'ns': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
 
-# Path to csv file to write to
+# Path to csv file to write to. Filename is in (YYYY/MM/DD)
 data_path = os.path.join(project_root, "data", f"{current_date}.csv")
 
 # Create new csv file or append to existing file
