@@ -27,7 +27,9 @@ with open(data_path, mode='a', newline='') as file:
         writer = csv.writer(file)
 
         # Write headers and data logs
-        writer.writerow(["Product", "Regular price", "Sale price"])
+        writer.writerow(["Product", "Regular price", "Sale price",
+                         "Category_1", "Category_2", "Category_3", "Category_4",
+                         "Category_5", "Category_6", "Energy (kcal)", "Carbohydrates", "Sugars", "Added sugars", "Fats", "Saturated fats", "Unsaturated fats", "Protein", "Fiber", "Salt"])
 
         # Find all urls in the .xml
         product_urls = xml_root.findall("ns:url", xml_namespace)
@@ -50,7 +52,11 @@ with open(data_path, mode='a', newline='') as file:
                 regular_price, sale_price = product_data["Prices"]
             except Exception as e:
                 regular_price, sale_price = ("NA", "NA")
+            
+            nutrition_values = [value for value in product_data["Nutrition"].values()]
+
+            row = [product_name, regular_price, sale_price] + product_data["Categories"] + nutrition_values
 
             # Write to csv and flush to disk to iteratively add to the csv
-            writer.writerow([product_name, regular_price, sale_price])
+            writer.writerow(row)
             file.flush()
