@@ -1,3 +1,15 @@
+"""
+Main script for creating a complete dataset of all albert heijn products.
+
+This script iterates over all product URLs given in data/product_URLs.xml and uses
+get_product_data() from scraping functions.py to retrieve data from every product
+to store into a csv file.
+
+If for any reason an error occurs during the main program, find the last written product,
+retrieve its url, look it up in the xml and grab the url after this one, then use
+continue_from_url.py to continue where the program started off.
+"""
+
 import csv
 import os
 import xml.etree.ElementTree as ET

@@ -1,3 +1,9 @@
+"""
+This script runs identical to main.py, but takes a starting URL and only writes the csv
+from this URL on and without writing headers. THis can be used in case of errors or crashes
+during scraping in the main function.
+"""
+
 import csv
 import os
 import xml.etree.ElementTree as ET
