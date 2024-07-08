@@ -1,9 +1,5 @@
 library(ggplot2)
 
-# Assuming filtered_food_df is your data frame containing relevant columns
-
-# Create a unique identifier for each row
-filtered_food_df$index <- 1:nrow(filtered_food_df)
 
 # Subset data frames based on categories
 df_wine <- filtered_food_df[filtered_food_df$Category_1 == "Wijn en bubbels", ]
@@ -15,7 +11,7 @@ df_no_gum_and_wine <- filtered_food_df[
   !(filtered_food_df$Category_2 %in% c("Kauwgom", "Pepermunt, keelpastilles")) &
     !(filtered_food_df$Category_1 == "Wijn en bubbels"), ]
 
-# Plot using ggplot
+# Plotting
 p <- ggplot() +
   geom_point(data = df_no_gum_and_wine, aes(x = Energy..kcal., y = kcal.estimation, color = "black"), alpha = 0.25) +
   geom_point(data = df_gum, aes(x = Energy..kcal., y = kcal.estimation, color = "blue"), alpha = 0.25) +
@@ -37,4 +33,5 @@ p <- ggplot() +
   )+
   guides(color = guide_legend(override.aes = list(size=3)))
 
+# Save plot
 ggsave(filename = "correlation_categorized.png", plot = p, width = 350/72, height = 225/72, dpi = 300, units = "in")
