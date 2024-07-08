@@ -27,4 +27,10 @@ Through this analysis, 5 products were found where the albert heijn website has 
 - [Garden Gourmet Sensational merguez](https://www.ah.nl/producten/product/wi577210/garden-gourmet-sensational-merguez) (869 kcal, 210 kJ)
 - [Knorr Spaghetteria formaggio](https://www.ah.nl/producten/product/wi574291/knorr-spaghetteria-formaggio) (435 kcal, 104 kJ)
 
-Because 1 kcal = 4.184 kJ, a product cannot contain more kcal than kJ.
+Because 1 kcal = 4.184 kJ, a product cannot contain more kcal than kJ. We can colour points in the previous plot according to some of our identified categories and find that many outliers do indeed correlate with sugar-free products and alcoholic beverages.
+
+<p align="center">
+  <img src="images/correlation_categorized.png" alt="Categorized Correlation Plot" width="400">
+</p>
+
+In all categories we see that their Non-sugar free and Non-alcoholic counterparts line up correctly with our prediction data. Most uncategorized outliers still consists of sugar-free products such as coffee sweeteners and sugar-free jams, but due to Albert Heijn not including separate categories for sugar-free products these are difficult to plot categorized.
