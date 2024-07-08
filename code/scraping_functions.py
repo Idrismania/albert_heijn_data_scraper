@@ -156,7 +156,7 @@ def get_product_data(url: str) -> Dict:
 
 if __name__ == "__main__":
 
-    product_url = "https://www.ah.nl/producten/product/wi141/ah-galia-meloen"
+    product_url = "https://www.ah.nl/producten/product/wi429397/oral-b-junior-star-wars-tandpasta"
     product_price = get_product_data(product_url)
 
     print(product_price)
