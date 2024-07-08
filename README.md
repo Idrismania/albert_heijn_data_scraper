@@ -17,12 +17,14 @@ $$ \text{Energy (kcal)} = 3.93 \times \text{carbohydrates} + 4.06 \times \text{p
 
 1. Artifically sweetened products due to these sweeteners being included in the website's carbohydrate count
 2. Alcoholic beverages due to alcohol content not being part of the equation but significantly contributing to calorie counts.
-3. Gluten-free flours contain little carbohydrate and mostly dietary fiber, which we do not account for
-4. Products consisting almost entirely of glucose syrup, though it is unclear why
+3. Some gluten-free flours contain little carbohydrate and mostly dietary fiber, which we do not account for.
+4. Products consisting almost entirely of glucose syrup, though it is unclear why.
 
-Through this analysis, 5 products were found where the albert heijn website has accidentally switched kcal with kJ, leading to our wrong prediction:
-- [Flower Farm Hazelnootpasta zonder palmolie](https://www.ah.nl/producten/product/wi532254/flower-farm-hazelnootpasta-zonder-palmolie)
-- [Ghaia Surinaamse roti gele erwten](https://www.ah.nl/producten/product/wi558400/ghaia-surinaamse-roti-gele-erwten)
-- [Garden Gourmet Sensational chipolata](https://www.ah.nl/producten/product/wi577209/garden-gourmet-sensational-chipolata)
-- [Garden Gourmet Sensational merguez](https://www.ah.nl/producten/product/wi577210/garden-gourmet-sensational-merguez)
-- [Knorr Spaghetteria formaggio](https://www.ah.nl/producten/product/wi574291/knorr-spaghetteria-formaggio)
+Through this analysis, 5 products were found where the albert heijn website has accidentally switched kcal with kJ, leading to our "wrong" prediction:
+- [Flower Farm Hazelnootpasta zonder palmolie](https://www.ah.nl/producten/product/wi532254/flower-farm-hazelnootpasta-zonder-palmolie) (2288 kcal, 547 kJ)
+- [Ghaia Surinaamse roti gele erwten](https://www.ah.nl/producten/product/wi558400/ghaia-surinaamse-roti-gele-erwten) (963 kcal, 228 kJ)
+- [Garden Gourmet Sensational chipolata](https://www.ah.nl/producten/product/wi577209/garden-gourmet-sensational-chipolata) (877 kcal, 212 kJ)
+- [Garden Gourmet Sensational merguez](https://www.ah.nl/producten/product/wi577210/garden-gourmet-sensational-merguez) (869 kcal, 210 kJ)
+- [Knorr Spaghetteria formaggio](https://www.ah.nl/producten/product/wi574291/knorr-spaghetteria-formaggio) (435 kcal, 104 kJ)
+
+Because 1 kcal = 4.184 kJ, a product cannot contain more kcal than kJ.
