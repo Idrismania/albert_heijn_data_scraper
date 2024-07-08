@@ -1,4 +1,4 @@
-`code/main.py` iterates over product urls in `data/product_URLs.xml` and retrieves price information from [Albert Heijn](https://www.ah.nl). Product information is stored as a csv. Due to rate-limiting protocols, asynchronous scraping is not possible, retrieving all data should take 5-6 hours.
+`code/main.py` iterates over product urls in `data/product_URLs.xml` and retrieves product information from [Albert Heijn](https://www.ah.nl). Product information is stored as a csv. Due to rate-limiting protocols, asynchronous scraping is not possible, retrieving all data should take 5-6 hours.
 
 Interesting findings are presented below
 
