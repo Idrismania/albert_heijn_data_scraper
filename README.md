@@ -3,7 +3,7 @@
 Interesting findings are presented below
 
 ## Estimation of energy (kcal) from nutrition data
-<p>The caloric energy in a food product can be estimated through a linear function with $R^{2} = 0.975$ through the following linear function:</p>
+<p>The caloric energy in a food product can be estimated with $R^{2} = 0.975$ through the following linear function:</p>
 
 $$ \text{Energy (kcal)} = 3.93 \times \text{carbohydrates} + 4.06 \times \text{protein} + 8.99 \times \text{fats} + 7.13 $$
 
