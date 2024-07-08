@@ -8,7 +8,7 @@ Interesting findings are presented below
 $$ \text{Energy (kcal)} = 3.93 \times \text{carbohydrates} + 4.06 \times \text{protein} + 8.99 \times \text{fats} + 7.13 $$
 
 <p align="center">
-  <img src="images/correlation.png" alt="Correlation Plot" width="400">
+  <img src="images/correlation_scatter.png" alt="Correlation Plot" width="400">
 </p>
 
 <p align=center>Where the macronutrients are expressed in grams per 100 grams or 100 ml of product</p>
