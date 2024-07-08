@@ -1,6 +1,6 @@
 library(ggplot2)
 
-filtered_food_df <- food_df[complete.cases(food_df[, c("Carbohydrates", "Protein", "Fats")]), c(1, 10, 11, 14, 17)]
+filtered_food_df <- food_df[complete.cases(food_df[, c("Carbohydrates", "Protein", "Fats")]), c(1, 10, 11, 14, 17, 4, 5, 6, 7, 8, 9)]
 
 # Fit a linear regression model
 model <- lm(Energy..kcal. ~ Carbohydrates + Fats + Protein, data = filtered_food_df)
