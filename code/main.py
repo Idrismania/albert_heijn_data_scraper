@@ -13,7 +13,7 @@ continue_from_url.py to continue where the program started off.
 import csv
 import os
 import xml.etree.ElementTree as ET
-from datetime import date, datetime
+from datetime import date
 from tqdm import tqdm
 from scraping_functions import get_product_data
 

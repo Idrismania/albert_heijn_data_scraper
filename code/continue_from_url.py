@@ -7,7 +7,7 @@ during scraping in the main function.
 import csv
 import os
 import xml.etree.ElementTree as ET
-from datetime import date, datetime
+from datetime import date
 from tqdm import tqdm
 from scraping_functions import get_product_data
 
@@ -15,7 +15,7 @@ from scraping_functions import get_product_data
 # Retrieve current day/time for data logging
 current_date = str(date.today())
 
-starting_url = "https://www.ah.nl/producten/product/wi429397/oral-b-junior-star-wars-tandpasta"
+starting_url = "https://www.ah.nl/producten/product/wi471359/marhaba-kalkoenrollade"
 
 url_collection = []
 
