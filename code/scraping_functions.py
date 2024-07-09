@@ -1,20 +1,29 @@
 import re
 import requests
 from bs4 import BeautifulSoup as bs
-from typing import Dict
+from typing import Dict, Union
 
 
-def extract_kcal_from_energy(energy_str):
-    # Use regular expression to find patterns like 'x kcal (y kJ)' or 'y kJ (x kcal)'
+def extract_kcal_from_energy(energy: str) -> Union[int, str]:
+    """
+    Use regular expression to find patterns like 'x kcal (y kJ)' or 'y kJ (x kcal)'.
+
+    Args:
+        energy (str): String containing raw kcal extraction from the Albert Heijn website.
+
+    Returns:
+        kcal (int | str): Energy in kcal as type int, or string "NA" when not available.
+    """
+    
     pattern = r"(\d+)\s*(?:kcal)\s*\(\s*(\d+)\s*(?:kJ)\)"  # Pattern for 'x kcal (y kJ)' format
-    match = re.search(pattern, energy_str)
+    match = re.search(pattern, energy)
 
     if match:
         kcal = int(match.group(1))  # Extract kcal value
     else:
         # If not found, try the reverse pattern 'y kcal (x kJ)'
         pattern = r"(\d+)\s*(?:kJ)\s*\(\s*(\d+)\s*(?:kcal)\)"
-        match = re.search(pattern, energy_str)
+        match = re.search(pattern, energy)
         
         if match:
             kcal = int(match.group(2))  # Extract kcal value
@@ -24,7 +33,7 @@ def extract_kcal_from_energy(energy_str):
     return kcal
 
 
-def get_product_data(url: str) -> Dict:
+def get_product_data(url: str) -> Union[Dict, None]:
     """
     Accesses a given URL on www.ah.nl and retrieves the product's name, prices, categories and nutritional information.
 
@@ -33,6 +42,8 @@ def get_product_data(url: str) -> Dict:
 
     Returns:
         Dict: product name, prices, categories and nutrition data under "Product", "Prices", "Categories" and "Nutrition" keys.
+        or
+        None if an error occurs
     """
     prices = []
     bonus = False
