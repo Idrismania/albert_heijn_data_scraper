@@ -26,13 +26,13 @@ def extract_kcal_from_energy(energy_str):
 
 def get_product_data(url: str) -> Dict:
     """
-    Accesses a given URL on www.ah.nl and retrieves the product's name and price.
+    Accesses a given URL on www.ah.nl and retrieves the product's name, prices, categories and nutritional information.
 
     Args:
         url (str): URL to a given product.
 
     Returns:
-        Dict: product name and price under "Product" and "Price" keys.
+        Dict: product name, prices, categories and nutrition data under "Product", "Prices", "Categories" and "Nutrition" keys.
     """
     prices = []
     bonus = False
@@ -42,7 +42,7 @@ def get_product_data(url: str) -> Dict:
     request = requests.get(url, headers=headers)
 
     # Check for access
-    if request.status_code == 200:
+    if request.status_code == 200 and len(request.content) > 0:
         
         # Retrieve html
         html_doc = request.text
@@ -51,6 +51,9 @@ def get_product_data(url: str) -> Dict:
         # Find div containing name and price information
         price_root_div = soup.find('div', class_=lambda classes: classes and 'Cx0SP' in classes)
         product_name_div = soup.find('div', class_=lambda classes: classes and 'c8eM5' in classes)
+
+        if product_name_div is None or price_root_div is None:
+            return None
         
         for element in product_name_div:
             if "ahgkd" in element.get('class', [])[0]:
@@ -156,7 +159,7 @@ def get_product_data(url: str) -> Dict:
 
 if __name__ == "__main__":
 
-    product_url = "https://www.ah.nl/producten/product/wi429397/oral-b-junior-star-wars-tandpasta"
+    product_url = "https://www.ah.nl/producten/product/wi214659/croma-mild-met-olijfolie"
     product_price = get_product_data(product_url)
 
     print(product_price)
