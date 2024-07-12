@@ -6,7 +6,7 @@ Interesting findings are presented below
 *(July 8th, 2024)*
 <p align="center">The caloric energy in a food product can be estimated with $R^{2} = 0.975$ through the following linear function:</p>
 
-$$ \text{Energy (kcal)} = 3.93 \times \text{carbohydrates} + 4.06 \times \text{protein} + 8.99 \times \text{fats} + 7.13 $$
+$$ \text{Energy (kcal)} = 3.93 \times \text{Carbohydrates (g)} + 4.06 \times \text{Protein (g)} + 8.99 \times \text{Fats (g)} + 7.13 $$
 
 <p align="center">
   <img src="images/correlation_scatter.png" alt="Correlation Plot" width="400">
