@@ -1,3 +1,6 @@
+> [!NOTE]
+> Web-scraping was performed respecting Albert Heijn's scraping policies as specified by https://www.ah.nl/robots.txt (July 8th, 2024)
+
 `code/main.py` iterates over product urls in `data/product_URLs.xml` and retrieves product information from [Albert Heijn](https://www.ah.nl). Product information is stored as a csv. Due to rate-limiting protocols, asynchronous scraping is not possible, retrieving all data should take 5-6 hours.
 
 Interesting findings are presented below
