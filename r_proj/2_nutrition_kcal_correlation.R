@@ -21,5 +21,5 @@ p <- ggplot(data = filtered_food_df, aes(x=Energy..kcal., y=kcal.estimation))+
     text = element_text(size=16),
     axis.text = element_text(size=16)
     )
-
-ggsave(filename = "correlation.png", plot = p, width = 350/72, height = 225/72, dpi = 300, units = "in")
+p
+#ggsave(filename = "correlation.png", plot = p, width = 350/72, height = 225/72, dpi = 300, units = "in")
