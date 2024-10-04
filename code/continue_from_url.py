@@ -6,6 +6,7 @@ during scraping in the main function.
 
 import csv
 import os
+import time
 import xml.etree.ElementTree as ET
 from datetime import date
 from tqdm import tqdm
@@ -14,7 +15,7 @@ from scraping_functions import get_product_data
 
 def continue_main() -> None:
 
-    starting_url = "https://www.ah.nl/producten/product/wi471359/marhaba-kalkoenrollade"
+    starting_url = "https://www.ah.nl/producten/product/wi61131/moet-en-chandon-champagne-nectar-imperial"
 
     url_collection = []
 
@@ -54,7 +55,7 @@ def continue_main() -> None:
                 product_data = None
                 while product_data is None:
                     product_data = get_product_data(product_url)
-
+                    time.sleep(0.5)
                 # Parse data
                 product_name = product_data["Product"]
 

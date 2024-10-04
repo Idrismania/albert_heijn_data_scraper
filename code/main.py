@@ -12,6 +12,7 @@ continue_from_url.py to continue where the program started off.
 
 import csv
 import os
+import time
 import xml.etree.ElementTree as ET
 from datetime import date
 from tqdm import tqdm
@@ -49,14 +50,16 @@ def main() -> None:
             product_urls = xml_root.findall("ns:url", xml_namespace)
             
             # Iterate over URLs in the .xml file
-            for url in tqdm(product_urls, leave=True):
+            for url in tqdm(product_urls):
 
                 product_url = url.find('ns:loc', xml_namespace).text
 
                 # Due to occasional bad webpage requests, retry data retrieval until succesful
                 product_data = None
                 while product_data is None:
+                    
                     product_data = get_product_data(product_url)
+                    time.sleep(0.5)
 
                 # Parse data
                 product_name = product_data["Product"]
