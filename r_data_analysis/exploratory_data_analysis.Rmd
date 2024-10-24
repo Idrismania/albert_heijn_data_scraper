@@ -1,0 +1,179 @@
+---
+title: "Data_Analysis"
+author: "Idris Iritas"
+date: "2024-10-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exploratory Data Analysis
+
+In this notebook we use some data visualisation tools to explore a dataset of Albert Heijn products
+
+```{r, echo=FALSE}
+# Imports
+library(ggplot2)
+
+```
+
+```{r}
+# Get project root paths
+r_project_root <- getwd()
+main_project_root <- dirname(r_project_root)
+
+```
+
+Load in the dataset from csv. The dataset used here is provided with the repository.
+
+```{r}
+data_path <- file.path(main_project_root, "complete_datasets", "2024-10-23.csv")
+
+df <- read.csv(data_path)
+
+dim(df)
+```
+
+This dataset has 30498 rows, or products, and 106 columns, or data features.
+
+What these features are is showcased below
+
+```{r}
+colnames(df)
+```
+
+A separate column was created for every nutrient encountered during scraping. This makes the dataframe unnecessarily large, as we do not use most of this data. We'll filter out all nutrients except for Energy values, carbohydrates, sugars, saturated fats, unsaturated fats, total fats, protein, fiber and salt.
+
+```{r}
+df <- df[, -c(22:99)]
+
+dim(df)
+```
+
+Now we have 28 columns of data. Next we want to be aware of the number of NA values for each column. We have a lot of missing data, such as missing nutrition for non-food items, missing categories and missing ingredients. Let's count the missing values per feature:
+
+```{r}
+na_counts <- sapply(df, function(x) sum(is.na(x)))
+
+na_counts
+```
+
+```{r}
+
+# Convert the named vector to a dataframe
+na_df <- data.frame(Names = names(na_counts), Values = as.numeric(na_counts))
+
+# Create the bar plot, sorted by Values in descending order
+ggplot(na_df, aes(x = reorder(Names, -Values), y = Values)) +
+  geom_bar(stat = "identity", fill = "darkred") +
+  coord_flip() + # Flip the plot for better readability
+  labs(x = "", y = "NA Values Count")
+```
+
+We observe that there is not much variation in the NA count for the nutrients: Energy, Carbohydrates, Sugars, Fats, Saturated fats, Protein and Salt. We can create a data-frame for values that have these nutrients labeled. But we have to do some data cleaning. The data is suffixed with units like "g" and "mg" and sometimes prefixed with "\<". Let's check which units exist for the nutritional columns
+
+```{r}
+# Function to check if only 'g' is present
+check_units <- function(column) {
+  
+  # Extract unique units using regular expression
+  units <- unique(gsub(".*?(g|kg|mg|l).*", "\\1", column))
+  return(unique(units))
+  
+}
+
+# Apply the function to each nutritional column
+result <- sapply(df[, c(14:21)], check_units)
+
+# Print results
+print(result)
+```
+
+We observe that g is the only unit used for all columns except for salt.
+
+Let's parse all the columns with only g, then handle the salt column afterwards:
+
+```{r}
+# Store these values for a sanity check
+old_values <- df$Koolhydraten[c(4328, 4619, 12249, 12697, 23202, 21876)]
+
+
+# Loop through columns 14 to 20
+for (col in 14:20) {
+  # Remove " g" and handle special cases like "< something g"
+  cleaned_values <- gsub(" g", "", df[[col]])
+  
+  # Replace any values that start with "<" with NA
+  cleaned_values <- ifelse(grepl("^<", cleaned_values), 0, cleaned_values)
+  
+  # Convert to numeric
+  df[[col]] <- as.numeric(cleaned_values)
+}
+
+# Store these values for a sanity check
+new_values <- df$Koolhydraten[c(4328, 4619, 12249, 12697, 23202, 21876)]
+```
+
+To check the result of our processing, we took a few indices as test-cases:
+
+```{r}
+aligned_output <- data.frame(Raw = old_values, Processed = new_values)
+
+aligned_output
+```
+
+It is important to note that with our rule-set of converting \< x to 0, we also convert \<19 g to 0.
+
+Now to handle the salt column, we perform the same parsing operation as before, except now we also divide by 1000 if we encounter mg to have all data as the same unit: grams.
+
+```{r}
+old_salt_values <- df$Zout[c(23254, 263, 9090, 7928, 19921, 2, 250)]
+
+# Remove " g" and handle special cases like "< something g" and milligrams
+cleaned_values <- gsub(" mg", "", df$Zout)   # Remove " mg" for easier processing
+cleaned_values <- gsub(" g", "", cleaned_values)  # Remove " g" for easier processing
+
+# Replace any values that start with "<" with 0
+cleaned_values <- ifelse(grepl("^<", cleaned_values), 0, cleaned_values)
+
+# Convert to numeric and handle mg
+df$Zout <- ifelse(grepl("mg$", df$Zout), as.numeric(cleaned_values) / 1000, as.numeric(cleaned_values))
+
+new_salt_values <- df$Zout[c(23254, 263, 9090, 7928, 19921, 2, 250)]
+```
+
+We can perform another sanity check below, and we see that the values were all converted correctly.
+
+```{r}
+aligned_salt_output <- data.frame(Raw = old_salt_values, Processed = new_salt_values)
+aligned_salt_output$Processed <- sprintf("%.4f", aligned_salt_output$Processed)
+
+aligned_salt_output
+```
+
+Now that our numerical nutrition data is processed, let's create a new data-frame that excludes all NA values for our aforementioned nutrients.
+
+```{r}
+# Create the subset of df with the specified columns
+nutrition_df <- df[, c("ProductId", "ProductName", "Energie..kcal.", "Vet", 
+                        "waarvan.verzadigd", "Koolhydraten", 
+                        "waarvan.suikers", "Eiwitten", "Zout")]
+
+nutrition_df <- na.omit(nutrition_df)
+
+head(nutrition_df)
+
+```
+
+Before we continue, I noticed a discrepancy between kcal and kJ energy measurements in the nutrition data:
+
+```{r}
+error_indices <- !is.na(df$Energie..kcal.) & !is.na(df$Energie..kJ.) & (df$Energie..kcal. > df$Energie..kJ.)
+
+error_products <- df[error_indices, c("ProductName", "Energie..kcal.", "Energie..kJ.")]
+
+print(error_products)
+
+```
